@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Heartbeat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('http://localhost:8080/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/heartbeat', function (message) {
+                    console.log(message.body);
+                });
+            });
+        }
+
+        window.onload = connect;
+    </script>
+</head>
+<body>
+<h1>WebSocket Heartbeat</h1>
+</body>
+</html>
